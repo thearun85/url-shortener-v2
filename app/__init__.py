@@ -18,9 +18,6 @@ def create_app() -> Flask:
     db_url: str = os.environ["DATABASE_URL"]
     engine = create_engine(db_url)
     app.config["SESSION_FACTORY"] = sessionmaker(bind=engine)
-
-    Base.metadata.create_all(engine)
-    logger.info("Database tables created..")
     
     from .routes import health_bp, url_bp
     app.register_blueprint(health_bp)

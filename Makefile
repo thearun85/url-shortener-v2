@@ -1,4 +1,4 @@
-.PHONY: run fmt lint typecheck test check clean
+.PHONY: run fmt lint typecheck test check create_db clean
 
 run:
 	docker-compose up
@@ -18,6 +18,9 @@ test:
 
 check: fmt lint typecheck test
 
+create_db:
+	poetry run python -m scripts.create_db
+	
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type d -name .mypy_cache -exec rm -rf {} +

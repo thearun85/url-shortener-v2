@@ -22,13 +22,7 @@ def create_app() -> Flask:
     Base.metadata.create_all(engine)
     logger.info("Database tables created..")
     
-    @app.route("/health", methods=['GET'])
-    def health() -> dict[str, str]:
-        return {
-            "status": "ok",
-            "service": "url-shortener-v2",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }
-
+    from .routes import health_bp
+    app.register_blueprint(health_bp)
     logger.info("App created.")
     return app

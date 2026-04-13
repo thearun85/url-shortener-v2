@@ -1,3 +1,4 @@
+[![CI](https://github.com/thearun85/url-shortener-v2/actions/workflows/ci.yml/badge.svg)](https://github.com/thearun85/url-shortener-v2/actions/workflows/ci.yml)
 # url-shortener-v2
 A URL shortener built with Flask, Postgres and Docker
 

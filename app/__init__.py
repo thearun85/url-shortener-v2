@@ -1,6 +1,12 @@
 import logging
 from flask import Flask
 from datetime import datetime, timezone
+from dotenv import load_dotenv
+
+load_dotenv()
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def create_app() -> Flask:
     app = Flask(__name__)

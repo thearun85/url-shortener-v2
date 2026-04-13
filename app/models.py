@@ -17,6 +17,4 @@ class URL(Base):
     )
     original_url: Mapped[str] = mapped_column(String, nullable=False)
 
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.now(UTC)
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(UTC))

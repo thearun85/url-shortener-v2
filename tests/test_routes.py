@@ -12,7 +12,7 @@ def app() -> Flask:
     return app
 
 @pytest.fixture
-def flask_client(app: Flask) -> FlaskClient:
+def client(app: Flask) -> FlaskClient:
     return app.test_client()
 
 def test_health_route(client: FlaskClient) -> None:
@@ -40,7 +40,7 @@ def test_shorten_empty_url_returns_400(client: FlaskClient) -> None:
     )
     assert response.status_code == 400
     data = response.get_json()
-    data["error"] == "url cannot be empty"
+    assert data["error"] == "url cannot be empty"
 
 def test_shorten_missing_url_returns_400(client: FlaskClient) -> None:
     response = client.post(
@@ -67,6 +67,7 @@ def test_get_shortcode_success(client: FlaskClient) -> None:
     shortcode = data['shortcode']
     response = client.get(f"/{shortcode}")
     assert response.status_code == 302
+    assert response.headers["Location"] == "https://linkedin.com"
 
 def test_get_invalid_shortcode_returns_404(client: FlaskClient) -> None:
     response = client.get(f"/test")

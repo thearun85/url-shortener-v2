@@ -56,3 +56,18 @@ def test_shorten_no_body_returns_400(client: FlaskClient) -> None:
         "/shorten",
     )
     assert response.status_code == 400
+
+def test_get_shortcode_success(client: FlaskClient) -> None:
+    response = client.post(
+        "/shorten",
+        json={"url": "https://linkedin.com"}
+    )
+    assert response.status_code == 201
+    data = response.get_json()
+    shortcode = data['shortcode']
+    response = client.get(f"/{shortcode}")
+    assert response.status_code == 302
+
+def test_get_invalid_shortcode_returns_404(client: FlaskClient) -> None:
+    response = client.get(f"/test")
+    assert response.status_code == 404

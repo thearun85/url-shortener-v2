@@ -1,5 +1,6 @@
 import logging
-from flask import Blueprint, request, jsonify, Response, current_app
+from flask import Blueprint, request, jsonify, current_app, redirect
+from flask.typing import ResponseReturnValue
 from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session
@@ -23,7 +24,7 @@ def health() -> dict[str, str]:
     }
 
 @url_bp.route("/shorten", methods=['POST'])
-def shorten() -> tuple[Response, int]:
+def shorten() -> ResponseReturnValue:
     data = request.get_json(silent=True)
     if not data or "url" not in data:
         return jsonify({
@@ -55,3 +56,17 @@ def shorten() -> tuple[Response, int]:
     return jsonify({
         "shortcode": shortcode,
     }), 201
+
+@url_bp.route("/<code>", methods=['GET'])
+def redirect_to_url(code: str) -> ResponseReturnValue:
+
+    session_factory = current_app.config["SESSION_FACTORY"]
+    with session_factory() as session:
+        url = session.query(URL).filter_by(shortcode=code).first()
+        if not url:
+            return jsonify({
+                "error": f"invalid shortcode {code}",
+            }), 404
+
+        return redirect(url.original_url, 302)
+        

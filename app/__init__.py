@@ -22,7 +22,8 @@ def create_app() -> Flask:
     Base.metadata.create_all(engine)
     logger.info("Database tables created..")
     
-    from .routes import health_bp
+    from .routes import health_bp, url_bp
     app.register_blueprint(health_bp)
+    app.register_blueprint(url_bp)
     logger.info("App created.")
     return app
